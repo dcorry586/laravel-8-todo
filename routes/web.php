@@ -15,9 +15,6 @@ use App\Http\Controllers\TodosController;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
 
 Auth::routes();
 
@@ -25,3 +22,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('todo', TodosController::class);
 
+// route welcome view to root --> '/'
+Route::get('/', function () {
+    return view('welcome');
+});

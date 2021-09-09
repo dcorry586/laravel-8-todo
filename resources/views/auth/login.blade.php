@@ -3,6 +3,8 @@
 @section('content')
 
 <style>
+
+
     .resetBtn {
         margin:0 auto;
     display:block;

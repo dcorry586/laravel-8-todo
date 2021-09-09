@@ -3,6 +3,12 @@
 @section('content')
 
 <style>
+
+body {
+    background-color: #D4E6F9;
+}
+
+
     .resetBtn {
         margin:0 auto;
     display:block;
