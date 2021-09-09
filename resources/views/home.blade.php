@@ -1,70 +1,68 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    {{ __('Dashboard') }}
-                </div>
-                <h5 class="card-header">
-                    <a href="{{ route('todo.create') }}" class="btn btn-sm btn-outline-primary">Add Item</a>
-                </h5>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+    <a href="{{ route('todo.create') }}">
+        {{-- Add Button --}}
+        <button type="button" class="btn btn-success w-100">Add</button>                                
+        </a>
 
-                    @if(session()->has('success'))
-                        <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            {{ session()->get('success') }}
-                        </div>
-                    @endif
+{{-- Dashboard Table --}}
+<table class="table">
+<thead class="table-dark">
+<tr>
+<th scope="col">Title</th>
+<th scope="col">Description</th>
+<th scope="col">Edit</th>
+<th scope="col">Delete</th>
+</tr>
+</thead>
+<tbody class="bg-light">
+<tr>
+{{-- <th scope="row">1</th> --}}
 
-                    <table class="table table-borderless table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Item</th>
-                            <th scope="col"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($todos as $todo)
-                                <tr>
-                                    @if ($todo->completed)
-                                        <td scope="row"><a href="{{ route('todo.edit', $todo->id) }}" style="color: black"><s>{{ $todo->title }}</s></a></td>
-                                    @else
-                                        <td scope="row"><a href="{{ route('todo.edit', $todo->id) }}" style="color: black">{{ $todo->title }}</a></td>
-                                    @endif
-                                    <td>
-                                        <a href="{{ route('todo.edit', $todo->id) }}" class="btn btn-sm btn-outline-success"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a href="{{ route('todo.show', $todo->id) }}" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    No Items Added!
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{-- forelse START --}}
+@forelse ($todos as $todo)
+<tr>
+@if ($todo->completed)
+<td>{{ $todo->title }}</td>
+@else
+
+<td>{{ $todo->title }}</td>
+<td>{{ $todo->description }}</td>
+@endif
+<td>
+<a href="{{ route('todo.edit', $todo->id) }}">
+    <button type="button" class="btn btn-warning">Edit</button>
+</a>
+</td>
+
+
+{{-- <a href="{{ route('todo.destroy', $todo->id) }}">
+    <button type="button" class="btn btn-danger">Delete</button>
+</a> --}}
+
+<td>
+<form action="{{ route('todo.destroy', $todo->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
+</td>
+</tr>
+@empty
+<td>
+No Items Added!
+</td>
+@endforelse
+{{-- forelse END --}}
+
+</tr>
+</tbody>
+</table>
+
+
+
+    
 @endsection
